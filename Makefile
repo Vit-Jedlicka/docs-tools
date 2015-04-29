@@ -19,7 +19,7 @@ const:
 gen_constitution:
 	mkdir -p $(CONST_TARGET_DIR)
 	cp $(CONST_FILE) $(CONST_FILE_OUT).md
-	perl -pi -e '$$_ .= "\nLast updated: $(DATE)\n" if /^#/' $(CONST_FILE_OUT).md
+	perl -pi -e '$$_ .= "\nLast updated: $(DATE)\n" if /^#[^#]+/' $(CONST_FILE_OUT).md
 	$(PANDOC) $(CONST_FILE_OUT).md -V geometry:margin=1in -o $(CONST_FILE_OUT).pdf
 	$(PANDOC) $(CONST_FILE_OUT).md -o $(CONST_FILE_OUT).html
 	$(PANDOC) $(CONST_FILE_OUT).md -o $(CONST_FILE_OUT).epub
