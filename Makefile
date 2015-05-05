@@ -5,16 +5,20 @@ GIT = git
 PERL = perl
 DATE = $(shell date "+%Y-%m-%d %H:%M %Z")
 
+CONST_REPO = git@github.com:liberland/constitution.git
 CONST_TARGET_DIR = $(TARGET_DIR)constitution/
 CONST_FILE = constitution/Liberland-constitution.md
 CONST_FILE_OUT = $(CONST_TARGET_DIR)Liberland-constitution
 
-all: gen_constitution
+all: update gen
 
-install: constitution
-	$(GIT) submodule init && $(GIT) submodule update
+gen: gen_constitution
 
-const:
+install:
+	$(GIT) clone $(CONST_REPO) constitution
+
+update:
+	cd constitution && $(GIT) fetch && $(GIT) pull
 
 gen_constitution:
 	mkdir -p $(CONST_TARGET_DIR)
@@ -25,5 +29,3 @@ gen_constitution:
 	$(PANDOC) $(CONST_FILE_OUT).md -o $(CONST_FILE_OUT).epub
 	$(PANDOC) $(CONST_FILE_OUT).md -o $(CONST_FILE_OUT).mobi
 
-update:
-	$(GIT) submodule update --remote --merge
